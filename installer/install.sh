@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# One-line installer usage (replace URL with hosted script):
-#   curl -sSL https://example.com/cryptolocker/install.sh | bash
+# One-line installer usage:
+#   curl -sSL https://raw.githubusercontent.com/zZedix/CryptoLockerBot/main/installer/install.sh | bash
 set -euo pipefail
 
 if [[ $(uname -s) != "Linux" ]]; then
