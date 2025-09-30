@@ -191,11 +191,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Repository**: [https://github.com/zZedix/CryptoLockerBot](https://github.com/zZedix/CryptoLockerBot)
 - **Issues**: [Report a bug or request a feature](https://github.com/zZedix/CryptoLockerBot/issues)
-- **Discussions**: [Community discussions](https://github.com/zZedix/CryptoLockerBot/discussions)
 
 ---
 
 <div align="center">
-  <p>Made with ❤️ for secure password management</p>
-  <p>⭐ Star this repository if you find it useful!</p>
+  <p>Made with ❤️ by zZedix</p>
+  <p>Securing the digital world, one line of code at a time!</p>
 </div>
