@@ -1,0 +1,15 @@
+[Unit]
+Description=CryptoLockerBot service
+After=network-online.target
+
+[Service]
+Type=simple
+User=%i
+EnvironmentFile=%h/.cryptolocker/config.env
+WorkingDirectory=%h/CryptoLockerBot
+ExecStart=%h/CryptoLockerBot/.venv/bin/python %h/CryptoLockerBot/bot.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
