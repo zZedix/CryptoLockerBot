@@ -17,6 +17,7 @@ CONFIG_FILE="${CONFIG_DIR}/config.env"
 SALT_FILE="${CONFIG_DIR}/salt"
 DB_PATH="${CONFIG_DIR}/cryptolocker.db"
 VENV_PATH="${PROJECT_DIR}/.venv"
+PYTHON_BIN="${VENV_PATH}/bin/python"
 
 read -r -p "Enter Telegram BOT TOKEN:" BOT_TOKEN
 while [[ ! ${BOT_TOKEN} =~ ^[0-9A-Za-z:-]+$ ]]; do
@@ -65,7 +66,7 @@ mkdir -p "${CONFIG_DIR}"
 chmod 700 "${CONFIG_DIR}"
 
 if [[ ! -f ${SALT_FILE} ]]; then
-  CRYPTOLOCKER_SALT_PATH="${SALT_FILE}" python3.12 - <<'PY'
+  CRYPTOLOCKER_SALT_PATH="${SALT_FILE}" "${PYTHON_BIN}" - <<'PY'
 import os
 import secrets
 from pathlib import Path
@@ -88,7 +89,7 @@ EOF_CONF
 chmod 600 "${CONFIG_FILE}"
 unset PASSPHRASE
 
-CRYPTOLOCKER_DB_PATH="${DB_PATH}" CRYPTOLOCKER_CONFIG_DIR="${CONFIG_DIR}" PYTHONPATH="${PROJECT_DIR}" python3.12 - <<'PY'
+CRYPTOLOCKER_DB_PATH="${DB_PATH}" CRYPTOLOCKER_CONFIG_DIR="${CONFIG_DIR}" PYTHONPATH="${PROJECT_DIR}" "${PYTHON_BIN}" - <<'PY'
 import asyncio
 import os
 from db import Database
