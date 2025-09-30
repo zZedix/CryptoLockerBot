@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -68,13 +69,17 @@ class Database:
                 await db.commit()
             self._initialized = True
 
-    async def _connect(self) -> aiosqlite.Connection:
+    @asynccontextmanager
+    async def _connect(self):
         conn = await aiosqlite.connect(self.db_path)
         conn.row_factory = aiosqlite.Row
-        return conn
+        try:
+            yield conn
+        finally:
+            await conn.close()
 
     async def ensure_user(self, telegram_id: int) -> None:
-        async with await self._connect() as db:
+        async with self._connect() as db:
             await db.execute(
                 "INSERT OR IGNORE INTO users (telegram_id) VALUES (?)",
                 (telegram_id,),
@@ -82,7 +87,7 @@ class Database:
             await db.commit()
 
     async def get_user_lang(self, telegram_id: int) -> str:
-        async with await self._connect() as db:
+        async with self._connect() as db:
             async with db.execute(
                 "SELECT lang FROM users WHERE telegram_id=?",
                 (telegram_id,),
@@ -91,7 +96,7 @@ class Database:
         return row["lang"] if row else "en"
 
     async def set_user_lang(self, telegram_id: int, lang: str) -> None:
-        async with await self._connect() as db:
+        async with self._connect() as db:
             await db.execute(
                 "UPDATE users SET lang=? WHERE telegram_id=?",
                 (lang, telegram_id),
@@ -100,7 +105,7 @@ class Database:
 
     async def add_account(self, owner_id: int, name: str, username: bytes, password: bytes) -> int:
         now = datetime.utcnow().isoformat(timespec="seconds")
-        async with await self._connect() as db:
+        async with self._connect() as db:
             cursor = await db.execute(
                 """
                 INSERT INTO accounts (owner_id, name, username, password, created_at, updated_at)
@@ -112,7 +117,7 @@ class Database:
             return cursor.lastrowid
 
     async def list_accounts(self, owner_id: int) -> List[AccountSummary]:
-        async with await self._connect() as db:
+        async with self._connect() as db:
             async with db.execute(
                 "SELECT id, name FROM accounts WHERE owner_id=? ORDER BY name",
                 (owner_id,),
@@ -122,7 +127,7 @@ class Database:
 
     async def search_accounts(self, owner_id: int, query: str) -> List[AccountSummary]:
         pattern = f"%{query}%"
-        async with await self._connect() as db:
+        async with self._connect() as db:
             async with db.execute(
                 """
                 SELECT id, name FROM accounts
@@ -135,7 +140,7 @@ class Database:
         return [AccountSummary(id=row["id"], name=row["name"]) for row in rows]
 
     async def get_account(self, account_id: int, owner_id: int) -> Optional[Account]:
-        async with await self._connect() as db:
+        async with self._connect() as db:
             async with db.execute(
                 """
                 SELECT id, owner_id, name, username, password, created_at, updated_at
@@ -157,7 +162,7 @@ class Database:
         )
 
     async def delete_account(self, account_id: int, owner_id: int) -> bool:
-        async with await self._connect() as db:
+        async with self._connect() as db:
             cursor = await db.execute(
                 "DELETE FROM accounts WHERE id=? AND owner_id=?",
                 (account_id, owner_id),
@@ -169,7 +174,7 @@ class Database:
         if field not in {"username", "password"}:
             raise ValueError("Unsupported field for update")
         now = datetime.utcnow().isoformat(timespec="seconds")
-        async with await self._connect() as db:
+        async with self._connect() as db:
             cursor = await db.execute(
                 f"UPDATE accounts SET {field}=?, updated_at=? WHERE id=? AND owner_id=?",
                 (value, now, account_id, owner_id),
