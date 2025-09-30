@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # One-line installer usage:
-#   curl -sSL https://raw.githubusercontent.com/zZedix/CryptoLockerBot/main/installer/install.sh | bash
+#   git clone https://github.com/zZedix/CryptoLockerBot.git && cd CryptoLockerBot && bash installer/install.sh
 set -euo pipefail
 
 if [[ $(uname -s) != "Linux" ]]; then
@@ -8,8 +8,14 @@ if [[ $(uname -s) != "Linux" ]]; then
   exit 1
 fi
 
-SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-PROJECT_DIR=$(cd "${SCRIPT_DIR}/.." && pwd)
+# Check if we're running from the cloned repository
+if [[ -f "bot.py" && -f "requirements.txt" ]]; then
+  PROJECT_DIR=$(pwd)
+else
+  echo "Error: This installer must be run from the CryptoLockerBot directory." >&2
+  echo "Please run: git clone https://github.com/zZedix/CryptoLockerBot.git && cd CryptoLockerBot && bash installer/install.sh" >&2
+  exit 1
+fi
 USER_NAME=$(whoami)
 USER_HOME=$(eval echo "~${USER_NAME}")
 CONFIG_DIR="${USER_HOME}/.cryptolocker"

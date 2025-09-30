@@ -24,7 +24,7 @@ CryptoLockerBot is a powerful and secure password management solution that runs 
 ### One-Line Installation
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/zZedix/CryptoLockerBot/main/installer/install.sh | bash
+git clone https://github.com/zZedix/CryptoLockerBot.git && cd CryptoLockerBot && bash installer/install.sh
 ```
 
 The installer will:
