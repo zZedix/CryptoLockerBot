@@ -183,6 +183,23 @@ We welcome contributions! Please follow these guidelines:
 4. Add tests
 5. Submit a pull request
 
+## 💰 Donations
+
+If you find CryptoLockerBot useful and want to support its development, consider making a donation:
+
+### Cryptocurrency Donations
+- **Bitcoin (BTC)**: `bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh`
+- **Ethereum (ETH)**: `0x8Fb2c4AF74e072CefC14A4E9927a1F86F1cd492c`
+- **Tron (TRX)**: `TD43B2eT7JC8upacMarcmBBGFkjy75QJHK`
+- **USDT (BEP20)**: `0x8Fb2c4AF74e072CefC14A4E9927a1F86F1cd492c`
+- **TON**: `UQAFTGSc2YRNGQwwuTyD0Q-eB7pB0BNG0yvx5jVYAJWFu-y6`
+
+### Other Ways to Support
+- ⭐ **Star the repository** if you find it useful
+- 🐛 **Report bugs** and suggest improvements
+- 📖 **Improve documentation** and translations
+- 🔗 **Share with others** who might benefit
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
